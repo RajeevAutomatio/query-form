@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Send Query to Webhook</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Ask a Question</h2>
+    <form id="queryForm">
+      <label for="query">Your Question:</label><br />
+      <textarea id="query" name="query" rows="4" required></textarea><br />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const webhookURL = "https://hook.us1.make.com/dixn46tomo3v8vqwchemkminqbktku3g";
+
+    document.getElementById("queryForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const query = document.getElementById("query").value;
+
+      fetch(webhookURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ query: query })
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("Query sent successfully!");
+          document.getElementById("queryForm").reset();
+        } else {
+          alert("Error sending query.");
+        }
+      })
+      .catch(error => {
+        alert("Network error.");
+        console.error(error);
+      });
+    });
+  </script>
+</body>
+</html>
